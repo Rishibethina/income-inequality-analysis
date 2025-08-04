@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "compiling.html",
+    "href": "compiling.html",
+    "title": "Untitled",
+    "section": "",
+    "text": "library(data.table)\nlibrary(janitor)\n\n\nAttaching package: 'janitor'\n\n\nThe following objects are masked from 'package:stats':\n\n    chisq.test, fisher.test\n\nlibrary(stringr)\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:data.table':\n\n    between, first, last\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(progress)\n\n# Define directory and files\ndata_dir &lt;- \"Interview_2016/EXPN\"\nfiles &lt;- list.files(data_dir, pattern = \"\\\\.csv$\", full.names = TRUE)\n\n# Extract year from folder path\nyear &lt;- stringr::str_extract(data_dir, \"\\\\d{4}\")\n\n# Initialize progress bar\npb &lt;- progress_bar$new(\n  total = length(files),\n  format = \"  📦 Loading [:bar] :percent eta: :eta :file\",\n  clear = FALSE, width = 60\n)\n\n# Function to read and clean one file\nread_and_clean &lt;- function(f, y) {\n  pb$tick(tokens = list(file = basename(f)))\n  dt &lt;- tryCatch(\n    fread(f, na.strings = c(\"\", \".\", \"NA\", \"N/A\"), showProgress = FALSE),\n    error = function(e) return(NULL)\n  )\n  if (is.null(dt) || ncol(dt) == 0) return(NULL)\n  dt &lt;- janitor::clean_names(dt)\n  dt$source_file &lt;- basename(f)\n  dt$year &lt;- y\n  return(dt)\n}\n\n# Apply function to all files\nall_data &lt;- lapply(files, read_and_clean, y = year)\nall_data &lt;- rbindlist(all_data, fill = TRUE, use.names = TRUE)\n\n# View result\nprint(dim(all_data))\n\n[1] 1049794    1446"
+  },
+  {
+    "objectID": "sources.html",
+    "href": "sources.html",
+    "title": "Sources",
+    "section": "",
+    "text": "This project draws on microdata from the U.S. Bureau of Labor Statistics Consumer Expenditure Survey (CEX), which collects detailed information on household spending habits across the United States. Specifically, I use the 2016 Interview Survey expenditure file labeled utc16, which records quarterly reported utility payments and related information at the household level. The data were accessed in .csv format and imported into R for cleaning and analysis. To prepare the data, I first inspected the structure of the file and filtered for numeric entries in the utility spending columns, ensuring that only valid dollar amounts were retained. I removed rows with missing or clearly miscoded spending values (such as entries marked with placeholders like “.” or flagged for editing). This subset of cleaned utility expenditure data was used to explore baseline spending behavior, forming the foundation for later adjustments by inflation and stratification by income group in subsequent modeling steps."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Home page",
+    "section": "",
+    "text": "This project investigates how inflation, particularly rising prices in essential goods like utilities, food, housing, and transportation, has shaped consumer spending behavior across different income groups in the United States from 2010 to 2022. Using detailed microdata from the BLS Consumer Expenditure Survey (CEX) and price data such as the Consumer Price Index (CPI), the study conducts yearly cross-sectional analyses to uncover patterns of resilience, burden, and behavioral adjustment. A key focus is on low- and middle-income households, where inflation may force trade-offs between essential needs."
+  },
+  {
+    "objectID": "About.html",
+    "href": "About.html",
+    "title": "About",
+    "section": "",
+    "text": "Hello! My name is Rishith Bethina and I am a High school student who is passionate in Economics and data science. My email is bethinarishith@gmail.com and this is the repo: https://github.com/Rishibethina/income-inequality-analysis This project was created as a part of Kane’s Data Science Bootcamp. https://bootcamp.davidkane.info/."
+  }
+]
