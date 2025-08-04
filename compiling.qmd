@@ -1,0 +1,49 @@
+---
+title: "Untitled"
+format: html
+---
+
+
+```{r}
+library(data.table)
+library(janitor)
+library(stringr)
+library(dplyr)
+library(progress)
+
+# Define directory and files
+data_dir <- "Interview_2016/EXPN"
+files <- list.files(data_dir, pattern = "\\.csv$", full.names = TRUE)
+
+# Extract year from folder path
+year <- stringr::str_extract(data_dir, "\\d{4}")
+
+# Initialize progress bar
+pb <- progress_bar$new(
+  total = length(files),
+  format = "  📦 Loading [:bar] :percent eta: :eta :file",
+  clear = FALSE, width = 60
+)
+
+# Function to read and clean one file
+read_and_clean <- function(f, y) {
+  pb$tick(tokens = list(file = basename(f)))
+  dt <- tryCatch(
+    fread(f, na.strings = c("", ".", "NA", "N/A"), showProgress = FALSE),
+    error = function(e) return(NULL)
+  )
+  if (is.null(dt) || ncol(dt) == 0) return(NULL)
+  dt <- janitor::clean_names(dt)
+  dt$source_file <- basename(f)
+  dt$year <- y
+  return(dt)
+}
+
+# Apply function to all files
+all_data <- lapply(files, read_and_clean, y = year)
+all_data <- rbindlist(all_data, fill = TRUE, use.names = TRUE)
+
+# View result
+print(dim(all_data))
+
+```
