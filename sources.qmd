@@ -1,0 +1,8 @@
+---
+title: "Sources"
+format: html
+Author: "Rishith Bethina"
+---
+
+This project draws on microdata from the U.S. Bureau of Labor Statistics Consumer Expenditure Survey (CEX), which collects detailed information on household spending habits across the United States. Specifically, I use the 2016 Interview Survey expenditure file labeled utc16, which records quarterly reported utility payments and related information at the household level. The data were accessed in .csv format and imported into R for cleaning and analysis.
+To prepare the data, I first inspected the structure of the file and filtered for numeric entries in the utility spending columns, ensuring that only valid dollar amounts were retained. I removed rows with missing or clearly miscoded spending values (such as entries marked with placeholders like "." or flagged for editing). This subset of cleaned utility expenditure data was used to explore baseline spending behavior, forming the foundation for later adjustments by inflation and stratification by income group in subsequent modeling steps.

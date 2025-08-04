@@ -1,0 +1,33 @@
+---
+title: "Home page"
+format: html
+author: "Rishith Bethina"
+execute: 
+  echo: false
+---
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+library(tidyverse)
+
+# Load the file
+file_path <- "Interview_2016/EXPN/utc16.csv"
+df <- read_csv(file_path, show_col_types = FALSE)
+
+# Plot histogram of UTILY values
+ggplot(df, aes(x = UTILY)) +
+  geom_histogram(binwidth = 10, fill = "steelblue", color = "white") +
+  labs(
+    title = "Distribution of UTILY Values (Utility Spending/Usage?)",
+    x = "UTILY",
+    y = "Number of Observations"
+  ) +
+  theme_minimal()
+
+```
+
+This project investigates how inflation, particularly rising prices in essential goods like utilities, food, housing, and transportation, has shaped consumer spending behavior across different income groups in the United States from 2010 to 2022. Using detailed microdata from the BLS Consumer Expenditure Survey (CEX) and price data such as the Consumer Price Index (CPI), the study conducts yearly cross-sectional analyses to uncover patterns of resilience, burden, and behavioral adjustment. A key focus is on low- and middle-income households, where inflation may force trade-offs between essential needs.
+
