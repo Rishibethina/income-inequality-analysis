@@ -1,0 +1,21 @@
+project:
+  type: website
+  output-dir: docs  # ✅ Moved here from under website
+
+website:
+  title: "My Website"
+  navbar:
+    right:
+      - text: "Home"
+        href: index.qmd
+      - text: "About"
+        href: about.qmd
+      - text: "Source"
+        href: sources.qmd
+      - text: "Model"
+        href: models.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: true

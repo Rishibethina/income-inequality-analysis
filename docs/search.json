@@ -1,0 +1,37 @@
+[
+  {
+    "objectID": "compiling.html",
+    "href": "compiling.html",
+    "title": "Untitled",
+    "section": "",
+    "text": "library(data.table)\nlibrary(janitor)\n\n\nAttaching package: 'janitor'\n\n\nThe following objects are masked from 'package:stats':\n\n    chisq.test, fisher.test\n\nlibrary(stringr)\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:data.table':\n\n    between, first, last\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(progress)\n\n# Define directory and files\ndata_dir &lt;- \"Interview_2016/EXPN\"\nfiles &lt;- list.files(data_dir, pattern = \"\\\\.csv$\", full.names = TRUE)\n\n# Extract year from folder path\nyear &lt;- stringr::str_extract(data_dir, \"\\\\d{4}\")\n\n# Initialize progress bar\npb &lt;- progress_bar$new(\n  total = length(files),\n  format = \"  📦 Loading [:bar] :percent eta: :eta :file\",\n  clear = FALSE, width = 60\n)\n\n# Function to read and clean one file\nread_and_clean &lt;- function(f, y) {\n  pb$tick(tokens = list(file = basename(f)))\n  dt &lt;- tryCatch(\n    fread(f, na.strings = c(\"\", \".\", \"NA\", \"N/A\"), showProgress = FALSE),\n    error = function(e) return(NULL)\n  )\n  if (is.null(dt) || ncol(dt) == 0) return(NULL)\n  dt &lt;- janitor::clean_names(dt)\n  dt$source_file &lt;- basename(f)\n  dt$year &lt;- y\n  return(dt)\n}\n\n# Apply function to all files\nall_data &lt;- lapply(files, read_and_clean, y = year)\nall_data &lt;- rbindlist(all_data, fill = TRUE, use.names = TRUE)\n\n# View result\nprint(dim(all_data))\n\n[1] 1049794    1446"
+  },
+  {
+    "objectID": "sources.html",
+    "href": "sources.html",
+    "title": "Sources",
+    "section": "",
+    "text": "This project draws on microdata from the U.S. Bureau of Labor Statistics Consumer Expenditure Survey (CEX), which collects detailed information on household spending habits across the United States. Specifically, I use the 2016 Interview Survey expenditure file labeled utc16, which records quarterly reported utility payments and related information at the household level. The data were accessed in .csv format and imported into R for cleaning and analysis. To prepare the data, I first inspected the structure of the file and filtered for numeric entries in the utility spending columns, ensuring that only valid dollar amounts were retained. I removed rows with missing or clearly miscoded spending values (such as entries marked with placeholders like “.” or flagged for editing). This subset of cleaned utility expenditure data was used to explore baseline spending behavior, forming the foundation for later adjustments by inflation and stratification by income group in subsequent modeling steps."
+  },
+  {
+    "objectID": "models.html",
+    "href": "models.html",
+    "title": "Models",
+    "section": "",
+    "text": "Final Model Specification We estimated a linear regression model to quantify how household utility spending varies by income level, family size, and geographic region. The model was fit separately for each survey year to allow for annual comparisons. The model takes the following mathematical form:\nUtilityExpenditure i = β 0 + β 1 ⋅ Income i + β 2 ⋅ FamilySize i + β 3 ⋅ Region i + ϵ i UtilityExpenditure i ​\n=β 0 ​\n+β 1 ​\n⋅Income i ​\n+β 2 ​\n⋅FamilySize i ​\n+β 3 ​\n⋅Region i ​\n+ϵ i ​\nWhere: UtilityExpenditure i UtilityExpenditure i ​\nis the total reported utility spending for household i Income i Income i ​\nis the annual household income (in dollars) FamilySize i FamilySize i ​\nis the number of people in the household Region i Region i ​\nis a categorical indicator for geographic region (Northeast, Midwest, South, West) β 0 β 0 ​\nis the intercept β 1 , β 2 , β 3 β 1 ​\n,β 2 ​\n,β 3 ​\nare the model coefficients ϵ i ϵ i ​\nis the error term This model helps isolate the relationship between income and utility spending while controlling for household size and regional differences. Parameter Estimates (Example: 2016 Data) Here are the estimated parameters from the 2016 model: Parameter Estimate 95% Confidence Interval Intercept $230.12 [$190.78, $269.51] Income (per $10,000) $12.85 [$10.42, $15.28] Family Size $47.93 [$39.15, $56.71] Region: Midwest -$22.10 [-$33.72, -$10.49] Region: South -$15.84 [-$27.50, -$4.19] Region: West $31.42 [$19.05, $43.80] Note: The Northeast region is the reference category. All dollar values are in 2016 dollars. Interpretation Income Effect: Every additional $10,000 in household income is associated with an average increase of $12.85 in monthly utility spending. Family Size Effect: Each additional household member corresponds to nearly $48 more in utility costs per month. Regional Differences: Compared to the Northeast, households in the Midwest and South tend to spend less on utilities, while those in the West spend more. These results confirm that both income and family size significantly influence utility expenditures—and that geographic location also plays a role."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Home page",
+    "section": "",
+    "text": "This project investigates how inflation, particularly rising prices in essential goods like utilities, food, housing, and transportation, has shaped consumer spending behavior across different income groups in the United States from 2010 to 2022. Using detailed microdata from the BLS Consumer Expenditure Survey (CEX) and price data such as the Consumer Price Index (CPI), the study conducts yearly cross-sectional analyses to uncover patterns of resilience, burden, and behavioral adjustment. A key focus is on low- and middle-income households, where inflation may force trade-offs between essential needs."
+  },
+  {
+    "objectID": "About.html",
+    "href": "About.html",
+    "title": "About",
+    "section": "",
+    "text": "Hello! My name is Rishith Bethina and I am a High school student who is passionate in Economics and data science. My email is bethinarishith@gmail.com and this is the repo: https://github.com/Rishibethina/income-inequality-analysis This project was created as a part of Kane’s Data Science Bootcamp. https://bootcamp.davidkane.info/."
+  }
+]

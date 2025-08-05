@@ -1,0 +1,9 @@
+---
+title: "About"
+format: html
+author: "Rishith Bethina"
+---
+
+Hello! My name is Rishith Bethina and I am a High school student who is passionate in Economics and data science. My email is bethinarishith@gmail.com and this is the repo: https://github.com/Rishibethina/income-inequality-analysis
+This project was created as a part of Kane’s Data Science Bootcamp.
+https://bootcamp.davidkane.info/.

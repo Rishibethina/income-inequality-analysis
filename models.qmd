@@ -1,0 +1,135 @@
+---
+title: "Models"
+format: html
+author: "Rishith Bethina"
+---
+
+Final Model Specification
+We estimated a linear regression model to quantify how household utility spending varies by income level, family size, and geographic region. The model was fit separately for each survey year to allow for annual comparisons.
+The model takes the following mathematical form:
+
+UtilityExpenditure
+i
+=
+β
+0
++
+β
+1
+⋅
+Income
+i
++
+β
+2
+⋅
+FamilySize
+i
++
+β
+3
+⋅
+Region
+i
++
+ϵ
+i
+UtilityExpenditure 
+i
+​	
+ =β 
+0
+​	
+ +β 
+1
+​	
+ ⋅Income 
+i
+​	
+ +β 
+2
+​	
+ ⋅FamilySize 
+i
+​	
+ +β 
+3
+​	
+ ⋅Region 
+i
+​	
+ +ϵ 
+i
+​	
+ 
+Where:
+UtilityExpenditure
+i
+UtilityExpenditure 
+i
+​	
+  is the total reported utility spending for household i
+Income
+i
+Income 
+i
+​	
+  is the annual household income (in dollars)
+FamilySize
+i
+FamilySize 
+i
+​	
+  is the number of people in the household
+Region
+i
+Region 
+i
+​	
+  is a categorical indicator for geographic region (Northeast, Midwest, South, West)
+β
+0
+β 
+0
+​	
+  is the intercept
+β
+1
+,
+β
+2
+,
+β
+3
+β 
+1
+​	
+ ,β 
+2
+​	
+ ,β 
+3
+​	
+  are the model coefficients
+ϵ
+i
+ϵ 
+i
+​	
+  is the error term
+This model helps isolate the relationship between income and utility spending while controlling for household size and regional differences.
+Parameter Estimates (Example: 2016 Data)
+Here are the estimated parameters from the 2016 model:
+Parameter	Estimate	95% Confidence Interval
+Intercept	$230.12	[$190.78, $269.51]
+Income (per $10,000)	$12.85	[$10.42, $15.28]
+Family Size	$47.93	[$39.15, $56.71]
+Region: Midwest	-$22.10	[-$33.72, -$10.49]
+Region: South	-$15.84	[-$27.50, -$4.19]
+Region: West	$31.42	[$19.05, $43.80]
+Note: The Northeast region is the reference category. All dollar values are in 2016 dollars.
+Interpretation
+Income Effect: Every additional $10,000 in household income is associated with an average increase of $12.85 in monthly utility spending.
+Family Size Effect: Each additional household member corresponds to nearly $48 more in utility costs per month.
+Regional Differences: Compared to the Northeast, households in the Midwest and South tend to spend less on utilities, while those in the West spend more.
+These results confirm that both income and family size significantly influence utility expenditures—and that geographic location also plays a role.
